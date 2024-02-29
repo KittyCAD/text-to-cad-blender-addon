@@ -3,6 +3,12 @@
 ## Zoo's Text To CAD Plugin For Blender
 A [Blender](https://blender.org) plugin to interact with Zoo's text-to-cad API, brought to you by the [Zoo Team](https://zoo.dev)
 
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+
 ## Prerequisites
 1. Create an account at [zoo.dev/signup](https://zoo.dev/signup) 
 2. Create an API token for your account at [zoo.dev/account/api-tokens](https://zoo.dev/account/api-tokens)
