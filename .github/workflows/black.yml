@@ -1,0 +1,32 @@
+name: black
+on:
+  push:
+    branches: main
+    paths:
+      - '**.py'
+      - .github/workflows/black.yml
+      - 'requirements.txt'
+  pull_request:
+    paths:
+      - '**.py'
+      - .github/workflows/black.yml
+      - 'requirements.txt'
+jobs:
+  black:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          cache: 'pip'
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          pip install black[jupyter]
+
+      - name: Run black
+        shell: bash
+        run: |
+          black --check --diff . */*.py
