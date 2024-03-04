@@ -11,7 +11,7 @@ import bpy
 
 bl_info = {
     "name": "Text To CAD",
-    "description": "Generate an object from text using Zoo.dev",
+    "description": "Generate an solid object from text, using Zoo.dev",
     "author": "Zoo.dev",
     "version": (1, 0),
     "blender": (3, 0, 0),
@@ -131,6 +131,7 @@ class TextToCAD(bpy.types.Operator):
 
     bl_idname = "text_to_cad.send"
     bl_label = "Text To CAD"
+    bl_description = "Generate a solid object from text. This may take several minutes to run"
     bl_options = {"REGISTER", "UNDO"}
 
     # tracking number of instances and invocation
@@ -151,7 +152,7 @@ class TextToCAD(bpy.types.Operator):
     # create a text property for prompt entry
     text: bpy.props.StringProperty(
         name="Text Prompt",
-        default="Create a plate with 4 holes and rounded corners.",
+        default="Create a 2m by 2m plate with 4 holes and rounded corners.",
         description="Describe an object that can be represented in geometric shapes.",
         **setter_getter("text"),
     )
@@ -239,7 +240,7 @@ class TextToCADProps(bpy.types.PropertyGroup):
 
     text: bpy.props.StringProperty(
         name="Text Prompt",
-        default="Create a plate with 4 holes and rounded corners.",
+        default="Create a 2m by 2m plate with 4 holes and rounded corners.",
         description="Describe an object that can be represented in geometric shapes.",
     )
 
