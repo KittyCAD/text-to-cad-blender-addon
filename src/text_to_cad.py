@@ -17,7 +17,7 @@ bl_info = {
     "blender": (3, 0, 0),
     "location": "3D Viewport > Object Mode > Add > Text To CAD",
     "warning": "",  # used for warning icon and text in addons panel
-    "doc_url": "https://zoo.dev/docs/api/ai/generate-a-cad-model-from-text",
+    "doc_url": "https://github.com/KittyCAD/text-to-cad-blender-plugin",
     "tracker_url": "https://github.com/KittyCAD/text-to-cad-blender-plugin/issues",
     "support": "COMMUNITY",
     "category": "Add Mesh",
@@ -82,10 +82,10 @@ def call_zoo_api(prompt: str, output_format: str, output_dir: Path) -> Path | st
 
     # create the response
     req = Request(post_url, data=data, headers=headers)
-    response = urlopen(req).read()
 
-    # decode the response to a dict
-    result = json.loads(response.decode("utf-8"))
+    with urlopen(req) as response:
+        # decode the response to a dict
+        result = json.loads(response.read().decode("utf-8"))
 
     # get the id of the request
     op_id = result["id"]
@@ -96,8 +96,8 @@ def call_zoo_api(prompt: str, output_format: str, output_dir: Path) -> Path | st
         async_url = f"https://api.zoo.dev/async/operations/{op_id}"
         headers = {"Authorization": auth, "User-Agent": "Mozilla/5.0"}
         async_req = Request(async_url, headers=headers)
-        response = urlopen(async_req).read()
-        result = json.loads(response.decode("utf-8"))
+        with urlopen(async_req) as response:
+            result = json.loads(response.read().decode("utf-8"))
         # using a sleep so that we don't keep pinging the site and get rate limited
         time.sleep(10)
 
@@ -193,7 +193,7 @@ class TextToCAD(bpy.types.Operator):
         set=set_output_dir,
     )
 
-    def execute(self, context) -> set:
+    def execute(self, _context) -> set:
         # check if the user has an API token
         if not check_for_token():
             msg = """Could not find the environment variable 'KITTYCAD_API_TOKEN', 
@@ -225,7 +225,7 @@ class TextToCAD(bpy.types.Operator):
         TextToCAD.invoked = False
         return {"FINISHED"}
 
-    def invoke(self, context, event):
+    def invoke(self, context, _event):
         TextToCAD.invoked = True
         res = context.window_manager.invoke_props_dialog(self, width=600)
         return res
@@ -262,15 +262,14 @@ class TextToCADProps(bpy.types.PropertyGroup):
 
 def create_icon() -> str:
     im_str = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x10\x00\x00\x00\x10\x08\x06\x00\x00\x00\x1f\xf3\xffa\x00\x00\x01\xa5IDATx\x9c\xcd\x921o\xda`\x10\x86\x9f\xcf\xfe\x0cb\x01\x04(\xa9m\x02\x12\x9d\x91\xd2!l\xccl\xcd\xc0\x8e\xd4\xfc\x06\xd4H\xf0\x17J26S\xca\xd6\x0c\x8d\x9a\x01\x98\x92\x89\xcd\xe2\x174#\x12\x8c!\x02!0\xb6\xaf\x03\n\xa2j\xa7fh\xdf\xe9\x86\xbb\xe7N\xef{\xcav\x1c\xe1\x152^3\xfc\x9f\x01\xa2("\x8a"D\x04\x91\xad-a\x18\x12E\x11\xfb=a\x18\xfe\x0e0M\x93l6K&\x93!\x16\x8b\x11\x8f\xc7\t\x82\x00\xd7uI&\x93\x84a\x88\xef\xfb\xa4\xd3il\xdb\xde-\x02\xd0\x9b\xcd\x86b\xb1\xc8E\xa7\x83R\n\xad5\xddn\x97r\xb9L\xa5Ra4\x1a\xf1\xa9\xd3\xa1rrB\xb3\xd9d6\x9bqqy\x89\xe7y\xdb\x13l\xc7\x117\x9f\x97B\xb1(\x9f\xaf\xae\xe4\xdb\xed\xad|8;\x93\xe1p(\x8e\xebJ\xbd^\x97~\xbf/\x9e\xe7\xc9\xfb\xd3S\xc9\x1f\x1d\xc9\xfd\xc3\x83T\xabU\xc9\x1d\x1c\x88\x01\xb0^\xafi4\x1a\xbc;>\xa6\xddn\xa3\x94b<\x1e\xb3Z\xad(\x14\n$\x12\tf\xcf\xcfL\xa7SR\xa9\x14o\x0e\x0f\xb7\xde\x88\xa0\x83 \xa0T*Q\xab\xd5\x10\x11\xbe\\_\xf3\xf5\xe6\x86\xc1`@\xaf\xd7C\x9b&\x1f\xcf\xcfY,\x16\xb4Z-\xde\x96J|\xbf\xbb\xe3\xc7\xe3#\x96e\xa1l\xc7\x11\xad5J)\xe2\xf18Zk\x96\xcb%\xbe\xefc\xdb6OOO\xcc\xe7s\x0c\xc3 \x97\xcb\xa1\xb5f2\x99`Y\x16\xc0\x16\x00\xfc\x12\x9fR\n\xa5\x14a\x18\xa2\x94\xc20\x8c]\x8c"\x82i\x9a\xbb\x18\xf5K\xf12\xb4\xaf\xfdF`\x07\xfa\xe3#\xfd\xad\xfe=\xe0\'\xb2\x8a\xb2\xa5\'B\xe7\xea\x00\x00\x00\x00IEND\xaeB`\x82'
-    fp = tempfile.NamedTemporaryFile(
+    with tempfile.NamedTemporaryFile(
         mode="w+b", prefix="zoo-icon-", suffix=".png", delete=False
-    )
-    with open(fp.name, "wb") as out:
-        out.write(im_str)
-    return fp.name
+    ) as fp:
+        fp.write(im_str)
+        return fp.name
 
 
-def menu_func(self, context):
+def menu_func(self, _context):
     # add a separator to the menu before adding our addon
     pcoll = preview_collections["main"]
     my_icon = pcoll["my_icon"]
