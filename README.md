@@ -1,4 +1,4 @@
-![Zoo Logo](assets/zoo-icon.png)
+![Zoo Logo](assets/zoo-banner.png)
 
 ## Zoo's Text To CAD Plugin For Blender
 
@@ -42,6 +42,8 @@ Make sure the *Text To CAD* addon is *enabled* by checking the box next to the p
 ## Usage
 
 The plugin can be accessed via shortcut `ctrl + shift + T` or while in Object Mode under the Add Menu
+
+#### NOTE: This plugin may take several minutes to run while your prompt is processing. Please check your [dashboard](https://text-to-cad.zoo.dev/dashboard) for progess
 
 ![](assets/launch_addon_menu.png)
 
