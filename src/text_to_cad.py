@@ -1,11 +1,11 @@
 import base64
-from enum import Enum
 import json
 import os
-from pathlib import Path
-from urllib.request import Request, urlopen
 import tempfile
 import time
+from enum import Enum
+from pathlib import Path
+from urllib.request import Request, urlopen
 
 import bpy
 
