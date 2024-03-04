@@ -131,7 +131,9 @@ class TextToCAD(bpy.types.Operator):
 
     bl_idname = "text_to_cad.send"
     bl_label = "Text To CAD"
-    bl_description = "Generate a solid object from text. This may take several minutes to run"
+    bl_description = (
+        "Generate a solid object from text. This may take several minutes to run"
+    )
     bl_options = {"REGISTER", "UNDO"}
 
     # tracking number of instances and invocation
