@@ -17,7 +17,11 @@ A [Blender](https://blender.org) plugin to interact with Zoo's Text-to-CAD API, 
 
 1. Create an account at [zoo.dev/signup](https://zoo.dev/signup)
 2. Create an API token for your account at [zoo.dev/account/api-tokens](https://zoo.dev/account/api-tokens)
-3. Add your API token to your environment with the name `KITTYCAD_API_TOKEN`
+3. Add your API token to your OS environment with the name `KITTYCAD_API_TOKEN`. In order to user our API, you'll need to provide an API token, the blender plugin will automatically look for it.
+   1. For each OS there are different ways of adding an environment variable Here are several guides
+      1. <https://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10>
+      2. <https://apple.stackexchange.com/questions/106778/how-do-i-set-environment-variables-on-os-x>
+      3. <https://askubuntu.com/a/58828>
 
 ## Installation
 
