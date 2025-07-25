@@ -41,7 +41,7 @@ def import_ply(path: Path) -> None:
 
 
 def import_stl(path: Path) -> None:
-    bpy.ops.import_mesh.stl(filepath=str(path))
+    bpy.ops.wm.stl_import(filepath=str(path))
 
 
 class OutputFormat(Enum):
